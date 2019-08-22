@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更改密码</title>
+</head>
+<body>
+    <div class="panel">
+        <div class="header">
+            <span class="col_fade">更改密码</span>
+        </div>
+        <div class="inner">
+            <form id="change_pass_form" class="form-horizontal" action="/reset/update" method="get">
+                <div class="control-group">
+                    <label class="control-label" for="old_pass">新密码</label>
+
+                    <div class="controls">
+                        <input class="input-xlarge" type="password" id="password" name="password" size="30" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                    </div>
+                </div>
+{#        <input type="hidden" id="action" name="action" value="change_password">#}
+        <input type="hidden" name="token" value={{ token }}>
+
+        <div class="form-actions">
+          <input type="submit" class="span-primary submit_btn" data-loading-text="更改中.." value="确定">
+        </div>
+      </form>
+    </div>
+    </div>
+</div>
+</body>
+</html>

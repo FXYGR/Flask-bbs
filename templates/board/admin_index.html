@@ -1,0 +1,9 @@
+{% extends "topic/base.html" %}
+{% block title %}board admin{% endblock%}
+{% block main %}
+    <form action="/board/add" method="post">
+        <input name="title">
+        <br>
+        <button>add</button>
+    </form>
+{% endblock %}
