@@ -13,7 +13,7 @@ from utils import log
 
 def configured_mailer():
     config = {
-        'manager.use': 'futures',
+        # 'manager.use': 'futures',
         'transport.debug': True,
         'transport.timeout': 1,
         'transport.use': 'smtp',

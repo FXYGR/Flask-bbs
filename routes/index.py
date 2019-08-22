@@ -225,7 +225,7 @@ def reset_password():
     token = new_csrf_token()
     id_token[token] = user.id
     log('reset_token', token)
-    content = 'http://localhost:4000/reset/view?token={}'.format(token)
+    content = 'http://129.28.170.70/reset/view?token={}'.format(token)
     send_mail(
         subject=title,
         author=admin_mail,
