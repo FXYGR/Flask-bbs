@@ -3,3 +3,9 @@ gua.log.txt
 *.pyc
 secret.py
 database_secret.conf
+*.md
+config.py
+misc/
+.gitattributes
+.gitignore.swp
+

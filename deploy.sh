@@ -26,25 +26,25 @@ pip3 install jinja2 flask gevent gunicorn pymysql flask_sqlalchemy flask_mail ma
 
 # 删除测试用户和测试数据库
 # 删除测试用户和测试数据库并限制关闭公网访问
-mysql -u root -pzaoshuizaoqi -e "DELETE FROM mysql.user WHERE User='';"
-mysql -u root -pzaoshuizaoqi -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-mysql -u root -pzaoshuizaoqi -e "DROP DATABASE IF EXISTS test;"
-mysql -u root -pzaoshuizaoqi -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+mysql -u root -pdatabase_password -e "DELETE FROM mysql.user WHERE User='';"
+mysql -u root -pdatabase_password -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+mysql -u root -pdatabase_password -e "DROP DATABASE IF EXISTS test;"
+mysql -u root -pdatabase_password -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 # 设置密码并切换成密码验证
-mysql -u root -pzaoshuizaoqi -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'zaoshuizaoqi';"
+mysql -u root -pdatabase_password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'database_password';"
 
 # 删掉 nginx default 设置
 rm -f /etc/nginx/sites-enabled/default
 rm -f /etc/nginx/sites-available/default
 
 # 不要再 sites-available 里面放任何东西
-cp /var/www/web19/web19.nginx /etc/nginx/sites-enabled/web19
-chmod -R o+rwx /var/www/web19
-cp /var/www/web19/web19.conf /etc/supervisor/conf.d/web19.conf
+cp /var/www/web/web.nginx /etc/nginx/sites-enabled/web
+chmod -R o+rwx /var/www/web
+cp /var/www/web/web.conf /etc/supervisor/conf.d/web.conf
 
 
 # 初始化
-cd /var/www/web19
+cd /var/www/web
 python3 reset.py
 
 # 重启服务器

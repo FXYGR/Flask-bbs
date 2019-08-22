@@ -34,7 +34,7 @@ def configured_app():
     # 这个字符串随便你设置什么内容都可以
     app.secret_key = secret.secret_key
 
-    uri = 'mysql+pymysql://root:{}@localhost/web19?charset=utf8mb4'.format(
+    uri = 'mysql+pymysql://root:{}@localhost/web?charset=utf8mb4'.format(
         secret.database_password
     )
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
