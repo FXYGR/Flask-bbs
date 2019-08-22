@@ -17,8 +17,10 @@
 ！[login/register]
 ## 话题浏览与发布
 ！[topic]
-## 个人主页与设置
-！[profile/setting]
+## 个人主页
+！[profile]
+## 设置、修改签名和上传头像
+！[setting]
 ## @用户与私信
 ！[@user]
 ## 找回密码
