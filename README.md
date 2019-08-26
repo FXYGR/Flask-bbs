@@ -1,6 +1,6 @@
 # Flask-bbs
 项目已经上线 http://129.28.170.70  
-测试账号 用户名：test 密码：1234  
+测试账号 用户名：test 密码：123  
 ## 简介  
 数据存储使用MySQL，ORM使用SQLAlchemy，模板使用jinja2，使用Redis进行缓存优化  
 使用 Redis 服务器存储 Token、Session 等数据，以实现多进程间的数据共享  
