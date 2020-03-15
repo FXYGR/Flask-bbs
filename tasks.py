@@ -1,7 +1,4 @@
-import time
-
 from celery import Celery
-# from app import configured_app
 from marrow.mailer import Mailer
 
 import secret
@@ -9,8 +6,6 @@ from config import admin_mail
 
 celery = Celery('tasks', backend='redis://localhost', broker='redis://localhost')
 
-
-# app = configured_app()
 
 def configured_mailer():
     config = {
@@ -64,8 +59,8 @@ def send_async(self, subject, author, to, plain):
         )
         m.plain = plain
         mailer.send(m)
-        time.sleep(10)
-        raise ValueError('tetest')
+        # time.sleep(10)
+        # raise ValueError('tetest')
     except Exception as exc:
         # 3秒重试一次 最多重试5次
         raise self.retry(exc=exc, countdown=3, max_retries=5)

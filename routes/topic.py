@@ -7,7 +7,7 @@ from flask import (
 )
 
 from routes import *
-
+from utils import log
 from models.topic import Topic
 from models.board import Board
 
@@ -22,34 +22,39 @@ def index():
         ms = Topic.all()
     else:
         ms = Topic.all(board_id=board_id)
-    token = new_csrf_token()
+    token = new_csrf_token(u)
     bs = Board.all()
     return render_template("topic/index.html", ms=ms, token=token, bs=bs, bid=board_id, user=u)
 
 
 @main.route('/<int:id>')
 def detail(id):
+    board_id = int(request.args.get('board_id', -1))
+    board = Board.one(id=board_id)
+    log("topic detail:", board_id, board)
     m = Topic.get(id)
     # 传递 topic 的所有 reply 到 页面中
-    return render_template("topic/detail.html", topic=m)
+    return render_template("topic/detail.html", topic=m, board=board)
 
 
 @main.route("/delete")
 @csrf_required
+@login_required
 def delete():
-    id = int(request.args.get('id'))
     u = current_user()
-    print('删除 topic 用户是', u, id)
+    id = int(request.args.get('id'))
+    # print('删除 topic 用户是', u, id)
     Topic.delete(id)
     return redirect(url_for('.index'))
 
 
 @main.route("/new")
+@login_required
 def new():
+    u = current_user()
     board_id = int(request.args.get('board_id'))
     bs = Board.all()
-    # return render_template("topic/new.html", bs=bs, bid=board_id)
-    token = new_csrf_token()
+    token = new_csrf_token(u)
     return render_template("topic/new.html", bs=bs, token=token, bid=board_id)
 
 

@@ -16,12 +16,6 @@
         <img src={{ user.image }} class="user_avatar" title={{ user.username }}>
       </div>
       <a class="dark">{{ user.username }}</a>
-
-      <div class="user_profile">
-        <ul class="unstyled">
-          <span class="big">0</span> 积分
-        </ul>
-      </div>
         <div class="space clearfix"></div>
     <span class="signature">
         {{ user.signature }}
@@ -53,7 +47,7 @@
 
   <a class="last_time pull-right" href="{{ url_for('topic.detail', id=c.id) }}">
     <img class="user_small_avatar" src={{ user.image }}>
-        <span class="gua-time">{{ c.created_time | format_time }}</span>
+        <span class="create-time">{{ c.created_time | format_time }}</span>
   </a>
 
   <div class="topic_title_wrapper">
@@ -92,7 +86,7 @@
 
   <a class="last_time pull-right" href={{ url_for('topic.detail', id=r.id) }}>
     <img class="user_small_avatar" src={{ user.image }}>
-    <span class="gua-updated-time">{{ r.updated_time | format_time }}</span>
+    <span class="updated-time">{{ r.updated_time | format_time }}</span>
   </a>
 
 

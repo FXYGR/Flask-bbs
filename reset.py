@@ -32,12 +32,6 @@ def generate_fake_date():
     u = User.register(form)
 
     form = dict(
-        username='tested',
-        password='123',
-    )
-    u = User.register(form)
-
-    form = dict(
         title='all',
     )
     b = Board.new(form)

@@ -7,7 +7,7 @@ from config import admin_mail
 import secret
 from models.base_model import SQLMixin, db
 from models.user import User
-from tasks import send_async_simple, send_async
+from tasks import send_async
 from utils import log
 
 
@@ -76,14 +76,14 @@ class Messages(SQLMixin, db.Model):
         # t = threading.Thread(target=send_mail, kwargs=form)
         # t.start()
         # log('邮件发送失败')
-        # send_async_simple.delay(
+        # send_async.delay(
         #     subject=form['title'],
         #     author=admin_mail,
         #     to=receiver.email,
         #     plain=form['content'],
         # )
         # log('邮件发送完成')
-        send_async_simple(
+        send_async(
             subject=form['title'],
             author=admin_mail,
             to=receiver.email,

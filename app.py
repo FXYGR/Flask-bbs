@@ -4,7 +4,6 @@ from flask import Flask
 
 import time
 import secret
-import config
 from models.base_model import db
 
 from routes.index import main as index_routes
@@ -12,13 +11,11 @@ from routes.topic import main as topic_routes
 from routes.reply import main as reply_routes
 from routes.board import main as board_routes
 from routes.message import main as mail_routes
+from routes.reset_password import main as reset_routes
+from routes.setting import main as setting_routes
 
 
 def format_time(unix_timestamp):
-    # enum Year():
-    #     2013
-    #     13
-    # f = Year.2013
     f = '%Y-%m-%d %H:%M:%S'
     value = time.localtime(unix_timestamp)
     formatted = time.strftime(f, value)
@@ -59,6 +56,8 @@ def register_routes(app):
     app.register_blueprint(reply_routes, url_prefix='/reply')
     app.register_blueprint(board_routes, url_prefix='/board')
     app.register_blueprint(mail_routes, url_prefix='/mail')
+    app.register_blueprint(reset_routes, url_prefix='/reset')
+    app.register_blueprint(setting_routes, url_prefix='/setting')
 
     app.template_filter()(format_time)
 

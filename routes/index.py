@@ -13,18 +13,12 @@ from flask import (
     current_app)
 from werkzeug.datastructures import FileStorage
 
-from config import admin_mail
-from models.message import send_mail
 from models.reply import Reply
 from models.topic import Topic
 from models.user import User
-from routes import current_user, cache, new_csrf_token
+from routes import current_user, cache
 from utils import log
-import gevent
-import time
 import json
-
-id_token = dict()
 
 
 main = Blueprint('index', __name__)
@@ -41,13 +35,12 @@ main = Blueprint('index', __name__)
 
 @main.route("/")
 def index():
-    # t = threading.Thread()
-    # t.start()
-    # gevent.spawn()
-    time.sleep(0.5)
-    print('time type', time.sleep, gevent.sleep)
-    u = current_user()
-    return render_template("index.html", user=u)
+    return render_template("login.html")
+
+
+@main.route("/register_view")
+def register_view():
+    return render_template("register.html")
 
 
 @main.route("/register", methods=['POST'])
@@ -81,51 +74,53 @@ def login():
 
 def created_topic(user_id):
     # O(n)
-    ts = Topic.all(user_id=user_id)
-    return ts
-    #
-    # k = 'created_topic_{}'.format(user_id)
-    # if cache.exists(k):
-    #     v = cache.get(k)
-    #     ts = json.loads(v)
-    #     return ts
-    # else:
-    #     ts = Topic.all(user_id=user_id)
-    #     v = json.dumps([t.json() for t in ts])
-    #     cache.set(k, v)
-    #     return ts
+    # ts = Topic.all(user_id=user_id)
+    # return ts
+
+    k = 'created_topic_{}'.format(user_id)
+    if cache.exists(k):
+        v = cache.get(k)
+        ts = json.loads(v)
+        ts = [Topic(**t) for t in ts]
+        return ts
+    else:
+        ts = Topic.all(user_id=user_id)
+        v = json.dumps([t.json() for t in ts])
+        cache.set(k, v)
+        return ts
 
 
 def replied_topic(user_id):
     # O(k)+O(m*n)
-    rs = Reply.all(user_id=user_id)
-    ts = []
-    for r in rs:
-        t = Topic.one(id=r.topic_id)
-        if t not in ts:
-            ts.append(t)
-    return ts
-    #
-    # k = 'replied_topic_{}'.format(user_id)
-    # if cache.exists(k):
-    #     v = cache.get(k)
-    #     ts = json.loads(v)
-    #     return ts
-    # else:
-    #     Topic.select()
+    # rs = Reply.all(user_id=user_id)
+    # ts = []
+    # for r in rs:
+    #     t = Topic.one(id=r.topic_id)
+    #     if t not in ts:
+    #         ts.append(t)
+    # return ts
+    # print('start')
+    k = 'replied_topic_{}'.format(user_id)
+    if cache.exists(k):
+        v = cache.get(k)
+        ts = json.loads(v)
+        ts = [Topic(**t) for t in ts]
+        log('replied:', ts)
+        return ts
+    else:
+        # Topic.select()
         #      .join(Reply, 'id', 'topic_id')
         #      .where(user_id=user_id)
         #      .all()
-        # rs = Reply.all(user_id=user_id)
-        # ts = []
-        # for r in rs:
-        #     t = Topic.one(id=r.topic_id)
-        #     ts.append(t)
-        #
-        # v = json.dumps([t.json() for t in ts])
-        # cache.set(k, v)
-        #
-        # return ts
+        rs = Reply.all(user_id=user_id)
+        ts = []
+        for r in rs:
+            t = Topic.one(id=r.topic_id)
+            if t not in ts:
+                ts.append(t)
+        v = json.dumps([t.json() for t in ts])
+        cache.set(k, v)
+        return ts
 
 
 @main.route('/profile')
@@ -137,6 +132,7 @@ def profile():
     else:
         created = created_topic(u.id)
         replied = replied_topic(u.id)
+        log("profile data:", created, replied)
         return render_template(
             'profile.html',
             user=u,
@@ -163,8 +159,8 @@ def avatar_add():
     # images/../../root/.ssh/authorized_keys
     # filename = secure_filename(file.filename)
     suffix = file.filename.split('.')[-1]
-    # filename = '{}.{}'.format(str(uuid.uuid4()), suffix)
-    filename = str(uuid.uuid4())
+    filename = '{}.{}'.format(str(uuid.uuid4()), suffix)
+    # filename = str(uuid.uuid4())
     path = os.path.join('images', filename)
     file.save(path)
 
@@ -184,75 +180,3 @@ def image(filename):
     # if filename in os.listdir('images'):
     #     return
     return send_from_directory('images', filename)
-
-
-@main.route('/setting')
-def setting():
-    u = current_user()
-    token = new_csrf_token()
-    board_id = 0
-    return render_template('setting.html', user=u, token=token, bid=board_id)
-
-
-@main.route('/setting/common_change', methods=['POST'])
-def common_change():
-    form = request.form
-    log('form:', form)
-    u = current_user()
-    u.username = form['name']
-    u.signature = form['signature']
-    u.save()
-    return redirect('/setting')
-
-
-@main.route('/setting/password_change', methods=['POST'])
-def password_change():
-    u = current_user()
-    form = request.form
-    old_ps = User.salted_password(form['old_pass'])
-    new_ps = User.salted_password(form['new_pass'])
-    if old_ps == u.password:
-        u.password = new_ps
-    u.save()
-    return redirect('/setting')
-
-
-@main.route('/reset/send', methods=['POST'])
-def reset_password():
-    title = '重置密码'
-    name = request.form['username']
-    user = User.one(username=name)
-    token = new_csrf_token()
-    id_token[token] = user.id
-    log('reset_token', token)
-    content = 'http://129.28.170.70/reset/view?token={}'.format(token)
-    send_mail(
-        subject=title,
-        author=admin_mail,
-        to=user.email,
-        content=content
-    )
-    return redirect('/')
-
-
-@main.route('/reset/view')
-def reset_view():
-    token = request.args['token']
-    if token in id_token:
-        return render_template('reset.html', token=token)
-    else:
-        return abort(401)
-
-
-@main.route('/reset/update')
-def reset_update():
-    token = request.args['token']
-    new_ps = request.args['password']
-    if token in id_token:
-        user_id = id_token[token]
-        user = User.one(id=user_id)
-        user.password = User.salted_password(new_ps)
-        user.save()
-        return redirect('/')
-    else:
-        return abort(401)

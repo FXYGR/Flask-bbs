@@ -27,6 +27,11 @@ class SQLMixin(object):
         return m
 
     @classmethod
+    def delete(cls, id):
+        cls.query.filter_by(id=id).delete()
+        db.session.commit()
+
+    @classmethod
     def update(cls, id, **kwargs):
         # u.username = 'test'
         # db.session.add(u)

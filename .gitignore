@@ -1,9 +1,8 @@
 .idea
-gua.log.txt
+test.log.txt
 *.pyc
 secret.py
 *.md
 config.py
 misc/
 .gitattributes
-

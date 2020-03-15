@@ -1,5 +1,5 @@
 {% extends "topic/base.html" %}
-{% block title %}登陆页面{% endblock%}
+{% block title %}注册页面{% endblock%}
 {% block main %}
 <div id="main">
   <div id="sidebar">
@@ -25,12 +25,12 @@
     <div class="header">
       <ul class="breadcrumb">
         <li><a href={{ url_for('topic.index') }}>主页</a><span class="divider">/</span></li>
-        <li class="active">登录</li>
+        <li class="active">注册</li>
       </ul>
     </div>
     <div class="inner">
-      
-      <form id="signin_form" class="form-horizontal" action="{{ url_for('.login') }}" method="post">
+
+      <form id="signin_form" class="form-horizontal" action="{{ url_for('.register') }}" method="post">
         <div class="control-group">
           <label class="control-label" for="name">用户名</label>
 
@@ -47,13 +47,7 @@
         </div>
 
         <div class="form-actions">
-          <input type="submit" class="span-primary" value="登录">
-          <a href="{{ url_for('index.register_view') }}">
-            <span class="span-info">
-              注册
-            </span>
-          </a>
-          <a id="forgot_password" href="{{ url_for('reset.index') }}">忘记密码了?</a>
+          <input type="submit" class="span-primary" value="注册">
         </div>
       </form>
     </div>
