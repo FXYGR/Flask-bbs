@@ -14,12 +14,14 @@
 - 实现对CSRF、XSS、SQL注入攻击的防御  
 # 详细
 ## 注册/登录
-！[login/register]
+![login/register](https://github.com/FXYGR/Flask-bbs/blob/master/gif/login%26register.gif "login/register")
 ## 话题浏览与发布
-！[topic]
-## 个人主页与设置
-！[profile/setting]
+![topic](https://github.com/FXYGR/Flask-bbs/blob/master/gif/topic.gif "topic")
+## 个人主页
+![profile](https://github.com/FXYGR/Flask-bbs/blob/master/gif/profile.gif "profile")
+## 设置、修改签名和上传头像
+![setting](https://github.com/FXYGR/Flask-bbs/blob/master/gif/setting.gif "setting")
 ## @用户与私信
-！[@user]
+![@user](https://github.com/FXYGR/Flask-bbs/blob/master/gif/@user.gif "@user")
 ## 找回密码
-！[password]
+![password](https://github.com/FXYGR/Flask-bbs/blob/master/gif/password.gif "password")
