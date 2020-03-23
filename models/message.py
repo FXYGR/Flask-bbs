@@ -1,4 +1,3 @@
-from time import sleep
 
 from marrow.mailer import Mailer
 from sqlalchemy import Column, Unicode, UnicodeText, Integer
@@ -8,7 +7,6 @@ import secret
 from models.base_model import SQLMixin, db
 from models.user import User
 from tasks import send_async
-from utils import log
 
 
 def configured_mailer():

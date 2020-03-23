@@ -33,9 +33,6 @@ class SQLMixin(object):
 
     @classmethod
     def update(cls, id, **kwargs):
-        # u.username = 'test'
-        # db.session.add(u)
-        # db.session.commit()
         m = cls.query.filter_by(id=id).first()
         for name, value in kwargs.items():
             setattr(m, name, value)
@@ -46,12 +43,13 @@ class SQLMixin(object):
     @classmethod
     def all(cls, **kwargs):
         ms = cls.query.filter_by(**kwargs).all()
-        # log('login all ms', ms)
+
         return ms
 
     @classmethod
     def one(cls, **kwargs):
         ms = cls.query.filter_by(**kwargs).first()
+
         return ms
 
     @classmethod
@@ -59,12 +57,6 @@ class SQLMixin(object):
         return cls.__mapper__.c.items()
 
     def __repr__(self):
-        """
-        __repr__ 是一个魔法方法
-        简单来说, 它的作用是得到类的 字符串表达 形式
-        比如 print(u) 实际上是 print(u.__repr__())
-        不明白就看书或者 搜
-        """
         name = self.__class__.__name__
         s = ''
         for attr, column in self.columns():
@@ -84,11 +76,6 @@ class SQLMixin(object):
                 v = getattr(self, attr)
                 d[attr] = v
         return d
-
-    # def json(self):
-    #     dict = self.__dict__
-    #     dict.pop('_sa_instance_state')
-    #     return dict
 
 
 class SimpleUser(SQLMixin, db.Model):

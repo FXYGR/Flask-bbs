@@ -1,21 +1,16 @@
-import uuid
 
 from flask import (
     render_template,
     request,
     redirect,
-    session,
-    url_for,
     Blueprint,
     abort,
-    send_from_directory,
-    current_app,
 )
 
 from config import admin_mail
 from models.message import send_mail
 from models.user import User
-from routes import current_user, cache, new_csrf_token, csrf_required
+from routes import cache, new_csrf_token
 from utils import log
 
 

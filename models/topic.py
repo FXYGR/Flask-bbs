@@ -1,11 +1,9 @@
-import time
 
-from sqlalchemy import String, Integer, Column, Text, UnicodeText, Unicode
+from sqlalchemy import Integer, Column, UnicodeText, Unicode
 
 from models.base_model import SQLMixin, db
 from models.user import User
 from models.reply import Reply
-from utils import log
 
 
 class Topic(SQLMixin, db.Model):

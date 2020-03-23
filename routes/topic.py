@@ -1,8 +1,5 @@
 from flask import (
     render_template,
-    request,
-    redirect,
-    url_for,
     Blueprint,
 )
 
@@ -33,7 +30,7 @@ def detail(id):
     board = Board.one(id=board_id)
     log("topic detail:", board_id, board)
     m = Topic.get(id)
-    # 传递 topic 的所有 reply 到 页面中
+
     return render_template("topic/detail.html", topic=m, board=board)
 
 
@@ -43,7 +40,7 @@ def detail(id):
 def delete():
     u = current_user()
     id = int(request.args.get('id'))
-    # print('删除 topic 用户是', u, id)
+
     Topic.delete(id)
     return redirect(url_for('.index'))
 

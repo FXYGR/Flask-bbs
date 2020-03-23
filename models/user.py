@@ -1,11 +1,8 @@
 import hashlib
-
-from sqlalchemy import Column, String, Text
-
 import config
-import secret
+
+from sqlalchemy import Column, String
 from models.base_model import SQLMixin, db
-# from routes import cache
 
 
 class User(SQLMixin, db.Model):
@@ -30,15 +27,9 @@ class User(SQLMixin, db.Model):
         name = form.get('username', '')
         print('register', form)
         if len(name) > 2 and User.one(username=name) is None:
-            # 错误，只应该 commit 一次
-            # u = User.new(form)
-            # u.password = u.salted_password(pwd)
-            # User.session.add(u)
-            # User.session.commit()
             form['password'] = User.salted_password(form['password'])
             u = User.new(form)
-            # k = 'session_cache_{}'.format(form['session'])
-            # cache.set(k, u.id)
+
             return u
         else:
             return None

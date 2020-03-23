@@ -1,4 +1,3 @@
-import time
 
 from sqlalchemy import Unicode, Column
 

@@ -1,13 +1,9 @@
 from flask import (
     render_template,
-    request,
-    redirect,
-    url_for,
     Blueprint,
 )
 
 from routes import *
-
 from models.board import Board
 
 

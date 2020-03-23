@@ -2,24 +2,12 @@ from flask import (
     render_template,
     request,
     redirect,
-    session,
-    url_for,
     Blueprint,
-    abort,
-    send_from_directory,
-    current_app)
-from werkzeug.datastructures import FileStorage
-
-from config import admin_mail
-from models.message import send_mail
-from models.reply import Reply
-from models.topic import Topic
+)
 from models.user import User
-from routes import current_user, cache, new_csrf_token
+from routes import current_user, new_csrf_token
 from utils import log
-import gevent
-import time
-import json
+
 
 main = Blueprint('setting', __name__)
 

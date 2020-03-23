@@ -5,7 +5,6 @@ from flask import (
     render_template,
     request,
     redirect,
-    session,
     url_for,
     Blueprint,
     abort,
@@ -55,11 +54,9 @@ def register():
 def login():
     form = request.form
     u = User.validate_login(form)
-    log('login user', u)
     if u is None:
         return redirect(url_for('.index'))
     else:
-        # session 中写入 user_id
         session_id = str(uuid.uuid4())
         key = 'session_id_{}'.format(session_id)
         log('index login key <{}> user_id <{}>'.format(key, u.id))
@@ -68,15 +65,11 @@ def login():
         redirect_to_index = redirect(url_for('topic.index'))
         response = current_app.make_response(redirect_to_index)
         response.set_cookie('session_id', value=session_id)
-        # 转到 topic.index 页面
+
         return response
 
 
 def created_topic(user_id):
-    # O(n)
-    # ts = Topic.all(user_id=user_id)
-    # return ts
-
     k = 'created_topic_{}'.format(user_id)
     if cache.exists(k):
         v = cache.get(k)
@@ -91,15 +84,6 @@ def created_topic(user_id):
 
 
 def replied_topic(user_id):
-    # O(k)+O(m*n)
-    # rs = Reply.all(user_id=user_id)
-    # ts = []
-    # for r in rs:
-    #     t = Topic.one(id=r.topic_id)
-    #     if t not in ts:
-    #         ts.append(t)
-    # return ts
-    # print('start')
     k = 'replied_topic_{}'.format(user_id)
     if cache.exists(k):
         v = cache.get(k)
@@ -108,10 +92,6 @@ def replied_topic(user_id):
         log('replied:', ts)
         return ts
     else:
-        # Topic.select()
-        #      .join(Reply, 'id', 'topic_id')
-        #      .where(user_id=user_id)
-        #      .all()
         rs = Reply.all(user_id=user_id)
         ts = []
         for r in rs:
@@ -153,14 +133,8 @@ def user_detail(id):
 @main.route('/image/add', methods=['POST'])
 def avatar_add():
     file: FileStorage = request.files['avatar']
-    # file = request.files['avatar']
-    # filename = file.filename
-    # ../../root/.ssh/authorized_keys
-    # images/../../root/.ssh/authorized_keys
-    # filename = secure_filename(file.filename)
     suffix = file.filename.split('.')[-1]
     filename = '{}.{}'.format(str(uuid.uuid4()), suffix)
-    # filename = str(uuid.uuid4())
     path = os.path.join('images', filename)
     file.save(path)
 
@@ -172,11 +146,4 @@ def avatar_add():
 
 @main.route('/images/<filename>')
 def image(filename):
-    # 不要直接拼接路由，不安全，比如
-    # http://localhost:2000/images/..%5Capp.py
-    # path = os.path.join('images', filename)
-    # print('images path', path)
-    # return open(path, 'rb').read()
-    # if filename in os.listdir('images'):
-    #     return
     return send_from_directory('images', filename)

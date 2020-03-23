@@ -1,10 +1,9 @@
 import functools
 import uuid
-from functools import wraps
-
 import redis
-from flask import session, request, abort, url_for, redirect
 
+from functools import wraps
+from flask import request, abort, url_for, redirect
 from models.user import User
 from utils import log
 

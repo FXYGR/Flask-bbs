@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# 1. 拉代码到 /var/www/web
-# 2. 执行 bash deploy.sh
 
 set -ex
 

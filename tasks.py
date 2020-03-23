@@ -59,7 +59,6 @@ def send_async(self, subject, author, to, plain):
         )
         m.plain = plain
         mailer.send(m)
-        # time.sleep(10)
         # raise ValueError('tetest')
     except Exception as exc:
         # 3秒重试一次 最多重试5次
